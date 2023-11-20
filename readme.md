@@ -3,9 +3,7 @@
 北京邮电大学校本部空闲教室查询脚本v2.2
 
 ## 下载链接
-[点我下载.exe文件](freeTime.exe)
-Mac用户可down源代码自行打包
-
+<a href="freeTime.exe" target="_blank">exe文件</a>
 ## 简单介绍
 
 本程序通过 Python 实现对教务系统-空闲教室抓包的数据进行处理，其中token获取部分需由用户自行完成。在下面会详细介绍如何使用
