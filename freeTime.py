@@ -4,8 +4,10 @@ import webbrowser
 from collections import defaultdict
 from datetime import datetime, timedelta
 from tkinter import *
+import subprocess
 from tkinter import messagebox, Label, Entry, Button, Frame, Menu, ttk, font
 import tkinter as tk
+import psutil
 import os
 
 
@@ -186,11 +188,16 @@ def save_history(token):
             file.write(item + "\n")
 
 
+def open_fiddler():
+    # 指定exe文件的路径
+    subprocess.Popen("fiddler")
+
+
 # Token 输入窗口
 def token_input_window():
     token_window = tk.Tk()
     token_window.title("Token 输入")
-    token_window.geometry("350x150")
+    token_window.geometry("350x160")
 
     history = load_history()
 
@@ -199,7 +206,8 @@ def token_input_window():
 
     token_frame = Frame(token_window)
     token_frame.pack()
-
+    open_button = Button(token_frame, text="打开fiddler", command=open_fiddler)
+    open_button.pack()
     token_var = tk.StringVar(token_window)
     token_entry = Entry(token_frame, textvariable=token_var)
     token_entry.pack(side=tk.LEFT)
@@ -251,9 +259,14 @@ def token_input_window():
         return False
 
     def validate_token():
+        pro = "taskkill /f /im %s" % "Fiddler.exe"
+        os.system(pro)
         token = token_var.get()
         if len(token) < 30:
             status_label.config(text="Token 验证失败，Token 位数小于30，请重新输入。")
+            return
+        if len(token) > 190:
+            status_label.config(text="Token 验证失败，你可能输多了。")
             return
         if has_consecutive_chars(token):
             status_label.config(text="Token格式错误，请重新输入。")
@@ -275,7 +288,7 @@ def token_input_window():
         except Exception as e:
             error_message = str(e)
             if "443" in error_message:
-                status_label.config(text="验证错误，你好像没关梯子")
+                status_label.config(text="验证错误，你好像没关梯子/fiddler")
             else:
                 status_label.config(text=f"验证错误，{e}")
 
